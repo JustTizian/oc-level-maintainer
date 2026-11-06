@@ -3,10 +3,11 @@ local me_interface = component.me_interface
 
 local logger = require("src.logger")
 local utils = require("src.utils")
+local number_parser = require("src.number_parser")
 
 local function validate_and_format_entry(label, values)
-    local batch_size = values[1]
-    local threshold = values[2]
+    local batch_size = number_parser.parse(values[1])
+    local threshold = number_parser.parse(values[2])
 
     local name = values[3] and values[3][1]
     local damage = values[3] and values[3][2]

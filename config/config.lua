@@ -1,16 +1,16 @@
 -- ["label"] = {batch_size, threshold, {name, damage}}
 return {
-    ["ULV Machine Casing"] = { 16, 1000 },
-    ["LV Machine Casing"] = { 16, 250 },
-    ["MV Machine Casing"] = { 16, 1000 },
-    ["HV Machine Casing"] = { 16, 1000 },
-    ["EV Machine Casing"] = { 1, 1000 },
-    ["IV Machine Casing"] = { 16, 1000, {"gregtech:gt.blockcasings", 5} },
-    ["LuV Machine Casing"] = { 16, 1000 },
-    ["ZPM Machine Casing"] = { 16, 1000 },
-    ["UV Machine Casing"] = { 16, 1000 },
-    ["Molten Polyethylene"] = { 1000, 10000 },
-    ["TV Mahie Cain"] = { 160, 1000 }
+    ["ULV Machine Casing"] = { 16, 1e3 },
+    ["LV Machine Casing"] = { 16, 1e6 },
+    ["MV Machine Casing"] = { 16, 1e9 },
+    ["HV Machine Casing"] = { 16, "1K" },
+    ["EV Machine Casing"] = { 1, "4.5M" },
+    ["IV Machine Casing"] = { 16, "4.5T", {"gregtech:gt.blockcasings", 5} },
+    ["LuV Machine Casing"] = { 16, "100_000_000_000" },
+    ["ZPM Machine Casing"] = { 16, 1.9999e12 },
+    ["UV Machine Casing"] = { 16, 1000000000000 },
+    ["Molten Polyethylene"] = { 1000, 1000000 },
+    ["TV Mahie Cain"] = { 160, 10000 }
 }
 
 --[[ return {

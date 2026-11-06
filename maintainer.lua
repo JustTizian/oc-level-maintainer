@@ -1,33 +1,34 @@
-local config       = require("config.config")
-local load_config  = require("src.load_config")
-local settings     = require("config.settings")
-local ae2_helpers  = require("src.ae2_helpers")
-local logger       = require("src.logger")
-local sides        = require("src.sides")
-local chest_reader = require("chest_reader")
-local term         = require("term")
+local config        = require("config.config")
+local load_config   = require("src.load_config")
+local settings      = require("config.settings")
+local ae2_helpers   = require("src.ae2_helpers")
+local logger        = require("src.logger")
+local sides         = require("src.sides")
+local chest_reader  = require("chest_reader")
+local term          = require("term")
+local number_parser = require("src.number_parser")
 
 local function is_already_crafting(properties, active_crafts_outputs)
     return active_crafts_outputs[properties.uid]
 end
 
 local function is_threshold_reached(properties)
-    return properties.threshold and properties.threshold <= ae2_helpers.get_stock(properties)
+    return properties.threshold and properties.threshold >= ae2_helpers.get_stock(properties)
 end
 
 local function should_send_craft_request(label, properties, active_crafts_outputs, filter_chest_uids)
     if (filter_chest_uids[properties.uid]) then
-        logger.fancy_log(label .. " x" .. properties.batch_size .. " is paused", "SKIP")
+        logger.fancy_log(label .. " x" .. number_parser.format(properties.batch_size) .. " is paused", "SKIP")
         return false
     end
 
     if (is_already_crafting(properties, active_crafts_outputs)) then
-        logger.fancy_log(label .. " x" .. properties.batch_size .. " is already crafting", "PROC")
+        logger.fancy_log(label .. " x" .. number_parser.format(properties.batch_size) .. " is already crafting", "PROC")
         return false
     end
 
     if (is_threshold_reached(properties)) then
-        logger.fancy_log(label .. " threshold is already reached", "FULL")
+        logger.fancy_log(label .. " threshold is already reached " .. number_parser.format(properties.threshold), "FULL")
         return false
     end
 
@@ -40,7 +41,7 @@ local function start(loaded_config)
 
     if (filter_chest_side) then
         local uids, exists = chest_reader.get_uid_lookup_table(filter_chest_side)
-        if(exists) then
+        if (exists) then
             logger.fancy_log("Filter chest found", "OKAY")
         end
     end
