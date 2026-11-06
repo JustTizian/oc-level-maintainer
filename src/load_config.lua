@@ -2,8 +2,8 @@ local component = require("component")
 local me_interface = component.me_interface
 
 local logger = require("src.logger")
-local utils = require("src.utils")
-local number_parser = require("src.number_parser")
+local utils = require("utils.utils")
+local number_parser = require("utils.number_parser")
 
 local function validate_and_format_entry(label, values)
     local batch_size = number_parser.parse(values[1])

@@ -3,10 +3,10 @@ local load_config   = require("src.load_config")
 local settings      = require("config.settings")
 local ae2_helpers   = require("src.ae2_helpers")
 local logger        = require("src.logger")
-local sides         = require("src.sides")
-local chest_reader  = require("chest_reader")
+local sides         = require("utils.sides")
+local chest_reader  = require("utils.chest_reader")
 local term          = require("term")
-local number_parser = require("src.number_parser")
+local number_parser = require("utils.number_parser")
 
 local function is_already_crafting(properties, active_crafts_outputs)
     return active_crafts_outputs[properties.uid]

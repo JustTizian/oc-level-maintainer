@@ -1,7 +1,7 @@
 local component = require("component")
 local inventory_controller = component.inventory_controller
 
-local utils = require("src.utils")
+local utils = require("utils.utils")
 
 local chest_reader = {}
 
