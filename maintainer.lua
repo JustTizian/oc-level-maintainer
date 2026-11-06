@@ -1,8 +1,8 @@
-local config = require("config")
-local load_config = require("load_config")
-local settings = require("settings")
-local ae2_helpers = require("ae2_helpers")
-local logger = require("logger")
+local config = require("config.config")
+local load_config = require("src.load_config")
+local settings = require("config.settings")
+local ae2_helpers = require("src.ae2_helpers")
+local logger = require("src.logger")
 
 local function is_already_crafting(properties, active_crafts_outputs)
     return active_crafts_outputs[properties.uid]
@@ -14,12 +14,12 @@ end
 
 local function should_send_craft_request(label, properties, active_crafts_outputs, paused)
     if (is_already_crafting(properties, active_crafts_outputs)) then
-        logger.fancy_log(label .. " x" .. properties.batch_size .. " is already crafting", "SKIP")
+        logger.fancy_log(label .. " x" .. properties.batch_size .. " is already crafting", "PROC")
         return false
     end
 
     if (is_threshold_reached(properties)) then
-        logger.fancy_log(label .. " threshold is already reached", "SKIP")
+        logger.fancy_log(label .. " threshold is already reached", "FULL")
         return false
     end
 

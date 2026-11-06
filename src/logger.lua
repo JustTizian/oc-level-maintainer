@@ -2,7 +2,7 @@ local component = require("component")
 local gpu = component.gpu
 local filesystem = require("filesystem")
 
-local settings = require("settings")
+local settings = require("config.settings")
 
 local logger = {}
 
@@ -41,13 +41,14 @@ local function print_timestamp()
 end
 
 local colors = {
-    OKAY = 0x00FF00,  -- green
-    WARN = 0xFFFF00,  -- yellow
-    FAIL = 0xFF5555,  -- light red
-    SKIP = 0x00AAAA,  -- persian green
-    INFO = 0xFFFFFF,  --white
-    DEBUG = 0x800080, -- purple
-    ERROR = 0x8B0000  -- dark red
+    INFO  = 0xCCCCCC, -- Light Gray
+    WARN  = 0xFFAA00, -- Orange
+    PROC  = 0x00BFFF, -- Deep Sky Blue
+    FULL  = 0x6699CC, -- Blue Gray
+    OKAY  = 0x00FF00, -- Lime
+    FAIL  = 0xFF6666, -- Light Red
+    ERROR = 0x990000, -- Dark Red
+    DEBUG = 0x888888  -- Gray
 }
 
 function logger.fancy_log(text, level)

@@ -1,7 +1,8 @@
 local component = require("component")
 local me_interface = component.me_interface
 
-local logger = require("logger")
+local logger = require("src.logger")
+local utils = require("src.utils")
 
 local function validate_and_format_entry(label, values)
     local batch_size = values[1]
@@ -36,7 +37,7 @@ local function validate_and_format_entry(label, values)
                 name = name,
                 damage = damage,
                 craftable = craftable,
-                uid = name .. ":" .. damage
+                uid = utils.concat_uid(name, damage)
             }
         end
         logger.fancy_log("Could not find craftable for " .. label .. " via name and damage (item)", "DEBUG")
@@ -70,19 +71,13 @@ local function validate_and_format_entry(label, values)
 
     local stack = craftable.getStack()
 
-    local uid = stack.name
-
-    if (stack.damage) then
-        uid = uid .. ":" .. stack.damage
-    end
-
     return true, {
         batch_size = batch_size,
         threshold = threshold,
         name = stack.name,
         damage = stack.damage,
         craftable = craftable,
-        uid = uid
+        uid = utils.concat_uid(stack.name, stack.damage)
     }
 end
 
