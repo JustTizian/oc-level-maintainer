@@ -47,6 +47,7 @@ local colors = {
     FULL  = 0x6699CC, -- Blue Gray
     OKAY  = 0x00FF00, -- Lime
     FAIL  = 0xFF6666, -- Light Red
+    SKIP  = 0xBB88DD, -- Medium Purple
     ERROR = 0x990000, -- Dark Red
     DEBUG = 0x888888  -- Gray
 }

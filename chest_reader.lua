@@ -1,13 +1,15 @@
 local component = require("component")
 local inventory_controller = component.inventory_controller
 
+local utils = require("src.utils")
+
 local chest_reader = {}
 
 function chest_reader.get_stacks(direction)
     local stack_slot = inventory_controller.getAllStacks(direction)
 
     if (not stack_slot) then
-        return {}
+        return {}, false
     end
 
     local stack = stack_slot()
@@ -20,14 +22,17 @@ function chest_reader.get_stacks(direction)
         stack = stack_slot()
     end
 
-    return stacks
+    return stacks, true
 end
 
-local output = chest_reader.get_stacks(1)
-for index, stack in ipairs(output) do
-    for key, value in pairs(stack) do
-        print(key, value)
+function chest_reader.get_uid_lookup_table(direction)
+    local stacks, chest_was_found = chest_reader.get_stacks(direction)
+
+    local uid_lookup_table = {}
+    for _, stack in pairs(stacks) do
+        uid_lookup_table[utils.concat_uid(stack.name, stack.damage)] = true
     end
+    return uid_lookup_table, chest_was_found
 end
 
 return chest_reader

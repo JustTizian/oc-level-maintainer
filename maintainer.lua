@@ -1,8 +1,11 @@
-local config = require("config.config")
-local load_config = require("src.load_config")
-local settings = require("config.settings")
-local ae2_helpers = require("src.ae2_helpers")
-local logger = require("src.logger")
+local config       = require("config.config")
+local load_config  = require("src.load_config")
+local settings     = require("config.settings")
+local ae2_helpers  = require("src.ae2_helpers")
+local logger       = require("src.logger")
+local sides        = require("src.sides")
+local chest_reader = require("chest_reader")
+local term         = require("term")
 
 local function is_already_crafting(properties, active_crafts_outputs)
     return active_crafts_outputs[properties.uid]
@@ -12,7 +15,12 @@ local function is_threshold_reached(properties)
     return properties.threshold and properties.threshold <= ae2_helpers.get_stock(properties)
 end
 
-local function should_send_craft_request(label, properties, active_crafts_outputs, paused)
+local function should_send_craft_request(label, properties, active_crafts_outputs, filter_chest_uids)
+    if (filter_chest_uids[properties.uid]) then
+        logger.fancy_log(label .. " x" .. properties.batch_size .. " is paused", "SKIP")
+        return false
+    end
+
     if (is_already_crafting(properties, active_crafts_outputs)) then
         logger.fancy_log(label .. " x" .. properties.batch_size .. " is already crafting", "PROC")
         return false
@@ -28,15 +36,40 @@ end
 
 local function start(loaded_config)
     local cycle_counter = 1
+    local filter_chest_side = sides[settings["filter_chest_side"]]
+
+    if (filter_chest_side) then
+        local uids, exists = chest_reader.get_uid_lookup_table(filter_chest_side)
+        if(exists) then
+            logger.fancy_log("Filter chest found", "OKAY")
+        end
+    end
+
     while true do
+        if (cycle_counter % settings["clear_screen_interval_in_cycles"] == 0) then
+            term.clear()
+            print(string.rep("=", 100))
+        end
         local active_crafts_outputs = ae2_helpers.get_active_crafts_outputs()
+
+        local filter_chest_exists
+        local filter_chest_uids = {}
+
+        if (filter_chest_side) then
+            filter_chest_uids, filter_chest_exists = chest_reader.get_uid_lookup_table(filter_chest_side)
+            if (not filter_chest_exists) then
+                logger.fancy_log("Filter Chest is enabled, but wasn't found", "WARN")
+            end
+        end
+
 
         logger.fancy_log("Cycle #" ..
             cycle_counter .. " Time in between cycles: " .. settings["sleep_time_in_between_cycles"] .. " seconds",
             "INFO")
 
+        print(string.rep("=", 100))
         for label, properties in pairs(loaded_config) do
-            if (should_send_craft_request(label, properties, active_crafts_outputs)) then
+            if (should_send_craft_request(label, properties, active_crafts_outputs, filter_chest_uids)) then
                 local craft_job = properties.craftable.request(properties.batch_size)
                 while craft_job.isComputing() do
                     os.sleep(1)
