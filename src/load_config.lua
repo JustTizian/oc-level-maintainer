@@ -30,7 +30,7 @@ local function validate_and_format_entry(label, values)
     -- if provided, validate name and damage, and than try to find craftable for item based on it
     if (name and type(name) == "string" and damage and type(damage) == "number") then
         success, craftable = pcall(me_interface.getCraftable, { name = name, damage = damage }, "item")
-        if (success) then
+        if (success and craftable) then
             logger.fancy_log("Found craftable for " .. label .. " via name and damage (item)", "DEBUG")
             return true, {
                 batch_size = batch_size,
@@ -47,7 +47,7 @@ local function validate_and_format_entry(label, values)
     -- if provided, validate name and damage, and than try to find craftable for fluid based on it
     if (name and type(name) == "string") then
         success, craftable = pcall(me_interface.getCraftable, { name = name, damage = damage }, "fluid")
-        if (success) then
+        if (success and craftable) then
             logger.fancy_log("Found craftable for " .. label .. " via only name (fluid)", "DEBUG")
             return true, {
                 batch_size = batch_size,

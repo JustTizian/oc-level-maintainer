@@ -10,7 +10,7 @@ return {
     ["ZPM Machine Casing"] = { 16, 1.9999e12 },
     ["UV Machine Casing"] = { 16, 1000000000000 },
     ["Molten Polyethylene"] = { 1000, 1000000 },
-    ["TV Mahie Cain"] = { 160, 10000 }
+    ["TV Mahie Cain"] = { 160, 10000, {"appliedenergistics2:item.ItemMultiPart", 36} }
 }
 
 --[[ return {

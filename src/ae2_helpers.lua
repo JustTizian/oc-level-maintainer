@@ -6,6 +6,9 @@ local ae2_helpers = {}
 function ae2_helpers.get_stock(properties)
     if (properties.damage) then
         local item_in_network = me_interface.getItemInNetwork(properties.name, properties.damage)
+        if (not item_in_network) then
+            return 0
+        end
         return item_in_network.size
     else
         local fluid_in_network = me_interface.getFluidInNetwork(properties.name)

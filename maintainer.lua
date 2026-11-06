@@ -13,7 +13,7 @@ local function is_already_crafting(properties, active_crafts_outputs)
 end
 
 local function is_threshold_reached(properties)
-    return properties.threshold and properties.threshold >= ae2_helpers.get_stock(properties)
+    return properties.threshold and properties.threshold <= ae2_helpers.get_stock(properties)
 end
 
 local function should_send_craft_request(label, properties, active_crafts_outputs, filter_chest_uids)
@@ -28,7 +28,7 @@ local function should_send_craft_request(label, properties, active_crafts_output
     end
 
     if (is_threshold_reached(properties)) then
-        logger.fancy_log(label .. " threshold is already reached " .. number_parser.format(properties.threshold), "FULL")
+        logger.fancy_log(label .. " threshold is already reached (" .. number_parser.format(properties.threshold) .. ")", "FULL")
         return false
     end
 
